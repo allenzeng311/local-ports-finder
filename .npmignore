@@ -1,0 +1,12 @@
+node_modules/
+src/
+
+.DS_Store
+
+.eslintignore
+.eslintrc.js
+.gitignore
+*.html
+jsconfig.json
+package-lock.json
+vite.config.js

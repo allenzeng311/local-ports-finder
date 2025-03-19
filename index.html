@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Ports Finder Example</title>
+  <style>
+    #probe-demo {
+      margin: 0 auto;
+      width: 80%;
+      padding-top: 15px;
+    }
+    #probe-demo ul,
+    #probe-demo li {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #probe-demo ul {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-around;
+      gap: 30px;
+    }
+    #probe-demo li {
+      flex: 1;
+    }
+    .port-range {
+      width: calc(100% - 10px);
+      margin-top: 15px;
+    }
+    .range-tips {
+      color: #666;
+      font-style: italic;
+      font-size: 14px;
+      margin: 0;
+    }
+    #probe-result-header {
+      margin-top: 20px;
+    }
+    #probe-result-header h2 {
+      margin: 0;
+    }
+    #probe-result {
+      padding: 10px;
+      border: 1px solid #666;
+      min-height: 260px;
+    }
+    #port-list,
+    #probe-logs {
+      display: none;
+    }
+    /* 使用 ::after 伪类实现 <hr> 效果 */
+    #port-list::after,
+    #probe-logs::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background-color: #ccc;
+      margin: 10px 0;
+    }
+
+    /* 使用 ::before 伪类实现 提示 效果 */
+    #port-list::before {
+      content: '整理后，最终发起探测名单：';
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #probe-logs::before {
+      content: '探测日志：';
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    #probe-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #footer {
+      margin: 0 auto;
+      width: 80%;
+      padding-top: 15px;
+      padding-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    #footer ul,
+    #footer li {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+    #footer ul {
+      display: inline-flex;
+      justify-content: space-around;
+      gap: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <h1>
+      <center>探测出运行中的端口号默认调试示例</center>
+    </h1>
+    <hr />
+    <div id="probe-demo">
+      <ul>
+        <li>
+          <button id="probe-default-port" class="probe-btn">默认示例：点击从默认的端口列表中探测到第一个运行中的端口号</button>
+          <textarea id="default-port-range"  class="port-range" rows="5" disabled></textarea>
+          <p class="range-tips">*：默认的探测端口列表不可修改，如果需要自定义可以选择自定义示例。</p>
+        </li>
+        <li>
+          <button id="probe-custom-port" class="probe-btn">自定义示例：点击从下面输入框的端口列表中探测到第一个运行中的端口号</button>
+          <textarea id="custom-port-range" class="port-range" rows="5" placeholder="请输入端口号，如果需要同时探测多个端口号用逗号隔开"></textarea>
+          <p class="range-tips">注意：输入的端口号将被清理和规范化，只保留数字和逗号，多个连续的逗号将被替换为单个逗号。</p>
+        </li>
+      </ul>
+      <div id="probe-result-header">
+        <h2>探测结果</h2>
+        <div id="probe-log-option">
+          <input type="checkbox" id="show-log" checked />
+          <label for="show-log">使用探测日志</label>
+        </div>
+      </div>
+      <div id="probe-result">
+        <div id="port-list"></div>
+        <div id="probe-logs"></div>
+      </div>
+    </div>
+    <div id="footer">
+      <ul>
+        <li>
+          <a href="esExample.html" target="_blank">ES Module 示例</a>
+        </li>
+        <li>
+          <a href="umdExample.html" target="_blank">UMD 示例</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <script type="module"> 
+    import * as localPortFinder from '@/index.js';
+
+    // 获取页面元素
+    var probeBtn = document.getElementsByClassName('probe-btn');
+    var probeDefaultPortBtn = document.getElementById('probe-default-port');
+    var probeCustomPortBtn = document.getElementById('probe-custom-port');
+    var defaultPortRangeInput = document.getElementById('default-port-range');
+    var customPortRangeInput = document.getElementById('custom-port-range');
+    var showLogOption = document.getElementById('show-log');
+    var portList = document.getElementById('port-list');
+    var probeLogs = document.getElementById('probe-logs');
+
+    // 设置最终要探测的端口号列表
+    function setPortList(ports) {
+      portList.innerText = ports.join(', ');
+    }
+
+    // 添加探测日志
+    function appendLog(info) {
+      var logItem = document.createElement('div');
+      logItem.textContent = `${info.port} ${info.status ? '✅' : '❌'}`;
+      probeLogs.appendChild(logItem);
+    }
+
+    // 清空探测日志
+    function clearLogs() {
+      probeLogs.style.display = 'none';
+      probeLogs.innerHTML = '';
+    }
+
+    // 清空端口列表
+    function clearPorts() {
+      portList.style.display = 'none';
+      portList.innerHTML = '';
+    }
+
+    // 格式化端口范围字符串
+    function formatPortRange(portRange) {
+      return portRange
+        .replace(/[\u3000\s\r\n\t]/g, '') // 移除所有空白字符，包括空格、回车、换行、制表符等
+        .replace(/，/g, ',') // 将中文全角逗号替换为英文半角逗号
+        .replace(/[^0-9,]/g, '') // 移除非数字和逗号的所有字符
+        .replace(/^,+|,+$/g, '') // 移除开头和结尾的逗号
+        .replace(/,+/g, ','); // 将多个连续的逗号替换为单个逗号
+    }
+
+    // 获取默认探测选项
+    function getDefaultProbeOptions() {
+      return {
+        logger: showLogOption.checked ? appendLog : null,
+        timeout: 1000
+      };
+    }
+
+    // 探测默认端口
+    function probeDefaultPort() {
+      // 显示探测日志
+      setPortList(localPortFinder.DEFAULT_PORTS);
+
+      // 获取默认探测选项
+      var defaultProbeOptions = getDefaultProbeOptions();
+
+      // 测试默认端口探测
+      localPortFinder.findFirstDefault(defaultProbeOptions).then(async result => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        // 延时后判断结果，防止阻塞页面
+        alert(`以100ms的超时阈值探测默认端口执行结果：${JSON.stringify(result)}`);
+      });
+    }
+
+    // 探测自定义端口
+    function probeCustomPort() {
+      // 获取输入的端口范围
+      var portRange = customPortRangeInput.value;
+      // 使用正则表达式清理和规范化输入
+      var cleanedPortRange = formatPortRange(portRange);
+      // 将清理后的端口范围字符串转换为端口号数组
+      var ports = cleanedPortRange.split(',').map(port => parseInt(port));
+
+      if (ports.length > 0 && !isNaN(ports[0])) {
+        // 显示探测日志
+        setPortList(ports);
+      }
+
+      // 获取默认探测选项
+      var defaultProbeOptions = getDefaultProbeOptions();
+
+      // 探测端口
+      localPortFinder.findFirst(ports, defaultProbeOptions).then(async result => {
+        await new Promise(resolve => setTimeout(resolve, 100));
+        // 延时后判断结果，防止阻塞页面
+        if (result.status) {
+          alert(`成功探测到第一个运行中的端口号：${result.port}`);
+        } else {
+          alert(`未探测到运行中的端口号，补充信息：${result.message}`);
+        }
+      });
+    }
+
+    // 监听页面加载完成事件
+    window.onload = function() {
+      // 设置默认端口示例储值控件值
+      defaultPortRangeInput.value = localPortFinder.DEFAULT_PORTS.join(', ');
+
+      // 给所有示例按钮添加点击事件监听，点击后执行示例界面管理
+      Array.from(probeBtn).forEach((item) => {
+        item.addEventListener('click', () => {
+          // 清空探测日志和端口列表
+          clearLogs();
+          clearPorts();
+
+          // 显示待探测端口列表
+          portList.style.display = 'block';
+
+          if (showLogOption.checked) {
+            // 显示探测日志
+            probeLogs.style.display = 'block';
+          }
+        });
+      });
+
+      // 监听查找默认端口按钮点击事件
+      probeDefaultPortBtn.addEventListener('click', probeDefaultPort);
+      // 监听查找自定义端口按钮点击事件
+      probeCustomPortBtn.addEventListener('click', probeCustomPort);
+    }
+  </script>
+</body>
+</html>
