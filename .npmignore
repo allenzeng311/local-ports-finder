@@ -5,7 +5,9 @@ src/
 
 .eslintignore
 .eslintrc.js
+.gitattributes
 .gitignore
+.npmrc
 *.html
 jsconfig.json
 package-lock.json

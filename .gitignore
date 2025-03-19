@@ -1,3 +1,6 @@
 node_modules/
+.gitattributes
+.npmignore
+.npmrc
 package-lock.json
 .DS_Store
