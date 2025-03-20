@@ -16,19 +16,20 @@ npm install local-ports-finder
 
 - **开发模式**：运行以下命令启动开发服务器：
 
-  ```bash
-  npm run dev
-  ```
+```bash
+npm run dev
+```
 
 - **构建项目**：运行以下命令构建项目，生成的文件将位于 `libs` 目录中：
 
-  ```bash
-  npm run build
-  ```
+```bash
+npm run build
+```
 
-  构建完成后，`libs` 目录下会生成两个文件：
-  - `localPortFinder.es.js`：ES Module 格式的文件，适用于现代浏览器。
-  - `localPortFinder.umd.js`：UMD 格式的文件，适用于传统浏览器或通过 `<script>` 标签直接引入。
+构建完成后，`libs` 目录下会生成两个文件：
+
+- `localPortFinder.es.js`：ES Module 格式的文件，适用于现代浏览器。
+- `localPortFinder.umd.js`：UMD 格式的文件，适用于传统浏览器或通过 `<script>` 标签直接引入。
 
 ### 通过 UMD 加载
 
@@ -63,7 +64,6 @@ npm install local-ports-finder
 ```html
 <script type="module">
   import * as localPortFinder from './libs/localPortFinder.es.js';
-
   // 测试指定端口探测
   localPortFinder.findFirst([8080,7070], {
     logger: (logText) => console.log(logText),
@@ -91,6 +91,11 @@ npm install local-ports-finder
 - **logger**（非必传）：用于指定观测探测过程的自定义方法。如果不传递，则静默探测，不进行任何输出汇报。
 - **timeout**（非必传，默认 2000 毫秒）：指定每个探测的超时时间。如果超时，则主动中止该次探测，防止探测耗时过久。
 
+## 预览
+
+你可以通过以下链接访问项目的在线预览页面：  
+[![Preview](https://img.shields.io/badge/Preview-Online-green.svg)](https://allenzeng311.github.io/local-ports-finder/)
+
 ## 协议
 
 本项目遵循 **MIT** 协议。
@@ -115,19 +120,20 @@ npm install local-ports-finder
 
 - **Development Mode**: Start the development server with the following command:
 
-  ```bash
-  npm run dev
-  ```
+```bash
+npm run dev
+```
 
 - **Build Project**: Build the project with the following command. The generated files will be located in the `libs` directory:
 
-  ```bash
-  npm run build
-  ```
+```bash
+npm run build
+```
 
-  After building, two files will be generated in the `libs` directory:
-  - `localPortFinder.es.js`: ES Module format, suitable for modern browsers.
-  - `localPortFinder.umd.js`: UMD format, suitable for traditional browsers or direct inclusion via `<script>` tag.
+After building, two files will be generated in the `libs` directory:
+
+- `localPortFinder.es.js`: ES Module format, suitable for modern browsers.
+- `localPortFinder.umd.js`: UMD format, suitable for traditional browsers or direct inclusion via `<script>` tag.
 
 ### Load via UMD
 
@@ -162,7 +168,6 @@ Include the `localPortFinder.es.js` file in your HTML:
 ```html
 <script type="module">
   import * as localPortFinder from './libs/localPortFinder.es.js';
-
   // Test custom port detection
   localPortFinder.findFirst([8080,7070], {
     logger: (logText) => console.log(logText),
@@ -189,6 +194,11 @@ Detects the first running port from a specified port list. A port list must be p
 
 - **logger** (optional): A custom method to observe the detection process. If not provided, the detection will be silent with no output.
 - **timeout** (optional, default 2000ms): Specifies the timeout for each detection. If the timeout is reached, the detection will be aborted to prevent long delays.
+
+## Preview
+
+You can access the online preview page of the project via the following link:  
+[![Preview](https://img.shields.io/badge/Preview-Online-green.svg)](https://allenzeng311.github.io/local-ports-finder/)
 
 ## License
 
