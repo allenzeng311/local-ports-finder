@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Ports Finder Umd Example</title>
+</head>
+<body>
+  <div id="app">
+  </div>
+
+  <script src="./libs/localPortFinder.umd.js"></script>
+  <script> 
+    // 监听页面加载完成事件
+    window.onload = function() {
+      // 测试默认端口探测
+      localPortFinder.findFirstDefault().then(async result => {
+        // 延时后判断结果，防止阻塞页面
+        document.getElementById('app').innerText = `探测默认端口执行结果：${JSON.stringify(result)}`;
+      });
+    }
+  </script>
+</body>
+</html>

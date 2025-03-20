@@ -2,12 +2,12 @@
   "name": "local-ports-finder",
   "version": "1.0.3",
   "description": "A browser-based tool to identify open ports on your local machine. Perfect for quick network diagnostics directly within your web browser.",
-  "main": "./dist/localPortFinder.es.js",
+  "main": "./libs/localPortFinder.es.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build --mode libs",
+    "docs": "vite build --mode docs",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "clean": "rm -rf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Allen Zeng",

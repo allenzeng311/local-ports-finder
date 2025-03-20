@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Local Ports Finder Example</title>
+  <style>
+    #probe-demo {
+      margin: 0 auto;
+      width: 80%;
+      padding-top: 15px;
+    }
+    #probe-demo ul,
+    #probe-demo li {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    #probe-demo ul {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      justify-content: space-around;
+      gap: 30px;
+    }
+    #probe-demo li {
+      flex: 1;
+    }
+    .port-range {
+      width: calc(100% - 10px);
+      margin-top: 15px;
+    }
+    .range-tips {
+      color: #666;
+      font-style: italic;
+      font-size: 14px;
+      margin: 0;
+    }
+    #probe-result-header {
+      margin-top: 20px;
+    }
+    #probe-result-header h2 {
+      margin: 0;
+    }
+    #probe-result {
+      padding: 10px;
+      border: 1px solid #666;
+      min-height: 260px;
+    }
+    #port-list,
+    #probe-logs {
+      display: none;
+    }
+    /* 使用 ::after 伪类实现 <hr> 效果 */
+    #port-list::after,
+    #probe-logs::after {
+      content: '';
+      display: block;
+      height: 1px;
+      background-color: #ccc;
+      margin: 10px 0;
+    }
+
+    /* 使用 ::before 伪类实现 提示 效果 */
+    #port-list::before {
+      content: '整理后，最终发起探测名单：';
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    #probe-logs::before {
+      content: '探测日志：';
+      display: block;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    #probe-result-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    #footer {
+      margin: 0 auto;
+      width: 80%;
+      padding-top: 15px;
+      padding-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    #footer ul,
+    #footer li {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+    #footer ul {
+      display: inline-flex;
+      justify-content: space-around;
+      gap: 20px;
+    }
+  </style>
+  <script type="module" crossorigin src="./assets/main.js"></script>
+</head>
+<body>
+  <div id="app">
+    <h1>
+      <center>探测出运行中的端口号默认调试示例</center>
+    </h1>
+    <hr />
+    <div id="probe-demo">
+      <ul>
+        <li>
+          <button id="probe-default-port" class="probe-btn">默认示例：点击从默认的端口列表中探测到第一个运行中的端口号</button>
+          <textarea id="default-port-range"  class="port-range" rows="5" disabled></textarea>
+          <p class="range-tips">*：默认的探测端口列表不可修改，如果需要自定义可以选择自定义示例。</p>
+        </li>
+        <li>
+          <button id="probe-custom-port" class="probe-btn">自定义示例：点击从下面输入框的端口列表中探测到第一个运行中的端口号</button>
+          <textarea id="custom-port-range" class="port-range" rows="5" placeholder="请输入端口号，如果需要同时探测多个端口号用逗号隔开"></textarea>
+          <p class="range-tips">注意：输入的端口号将被清理和规范化，只保留数字和逗号，多个连续的逗号将被替换为单个逗号。</p>
+        </li>
+      </ul>
+      <div id="probe-result-header">
+        <h2>探测结果</h2>
+        <div id="probe-log-option">
+          <input type="checkbox" id="show-log" checked />
+          <label for="show-log">使用探测日志</label>
+        </div>
+      </div>
+      <div id="probe-result">
+        <div id="port-list"></div>
+        <div id="probe-logs"></div>
+      </div>
+    </div>
+    <div id="footer">
+      <ul>
+        <li>
+          <a href="./esExample.html" target="_blank">ES Module 示例</a>
+        </li>
+        <li>
+          <a href="./umdExample.html" target="_blank">UMD 示例</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  
+</body>
+</html>

@@ -20,13 +20,13 @@ npm install local-ports-finder
   npm run dev
   ```
 
-- **构建项目**：运行以下命令构建项目，生成的文件将位于 `dist` 目录中：
+- **构建项目**：运行以下命令构建项目，生成的文件将位于 `libs` 目录中：
 
   ```bash
   npm run build
   ```
 
-  构建完成后，`dist` 目录下会生成两个文件：
+  构建完成后，`libs` 目录下会生成两个文件：
   - `localPortFinder.es.js`：ES Module 格式的文件，适用于现代浏览器。
   - `localPortFinder.umd.js`：UMD 格式的文件，适用于传统浏览器或通过 `<script>` 标签直接引入。
 
@@ -35,7 +35,7 @@ npm install local-ports-finder
 将 `localPortFinder.umd.js` 文件引入到您的 HTML 中：
 
 ```html
-<script src="../dist/localPortFinder.umd.js"></script>
+<script src="../libs/localPortFinder.umd.js"></script>
 <script>
   // 测试默认端口探测
   localPortFinder.findFirstDefault().then(async result => {
@@ -62,7 +62,7 @@ npm install local-ports-finder
 
 ```html
 <script type="module">
-  import * as localPortFinder from './dist/localPortFinder.es.js';
+  import * as localPortFinder from './libs/localPortFinder.es.js';
 
   // 测试指定端口探测
   localPortFinder.findFirst([8080,7070], {
@@ -119,13 +119,13 @@ npm install local-ports-finder
   npm run dev
   ```
 
-- **Build Project**: Build the project with the following command. The generated files will be located in the `dist` directory:
+- **Build Project**: Build the project with the following command. The generated files will be located in the `libs` directory:
 
   ```bash
   npm run build
   ```
 
-  After building, two files will be generated in the `dist` directory:
+  After building, two files will be generated in the `libs` directory:
   - `localPortFinder.es.js`: ES Module format, suitable for modern browsers.
   - `localPortFinder.umd.js`: UMD format, suitable for traditional browsers or direct inclusion via `<script>` tag.
 
@@ -134,7 +134,7 @@ npm install local-ports-finder
 Include the `localPortFinder.umd.js` file in your HTML:
 
 ```html
-<script src="../dist/localPortFinder.umd.js"></script>
+<script src="../libs/localPortFinder.umd.js"></script>
 <script>
   // Test default port detection
   localPortFinder.findFirstDefault().then(async result => {
@@ -161,7 +161,7 @@ Include the `localPortFinder.es.js` file in your HTML:
 
 ```html
 <script type="module">
-  import * as localPortFinder from './dist/localPortFinder.es.js';
+  import * as localPortFinder from './libs/localPortFinder.es.js';
 
   // Test custom port detection
   localPortFinder.findFirst([8080,7070], {
