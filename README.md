@@ -193,4 +193,3 @@ Detects the first running port from a specified port list. A port list must be p
 ## License
 
 This project is licensed under the **MIT License**.
-```
