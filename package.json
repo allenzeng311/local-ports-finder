@@ -1,6 +1,6 @@
 {
   "name": "local-ports-finder",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A browser-based tool to identify open ports on your local machine. Perfect for quick network diagnostics directly within your web browser.",
   "main": "./libs/localPortFinder.es.js",
   "scripts": {
