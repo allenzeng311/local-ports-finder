@@ -20,6 +20,7 @@ if (process.env.npm_lifecycle_event === 'prepublishOnly') {
 if (process.env.npm_lifecycle_event === 'postpublish') {
   if (fs.existsSync(backupJsonPath)) {
     fs.writeFileSync(packageJsonPath, fs.readFileSync(backupJsonPath, 'utf8'))
+    fs.appendFileSync(packageJsonPath, '\n')
     fs.unlinkSync(backupJsonPath)
   }
 }
